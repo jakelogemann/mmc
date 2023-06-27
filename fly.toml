@@ -1,0 +1,18 @@
+# fly.toml app configuration file generated for mmc on 2023-06-26T21:55:19-04:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = "mmc"
+primary_region = "bos"
+
+[env]
+EULA = "true"
+
+[mounts]
+source = "mmc_data"
+destination = "/data"
+
+[[services.ports]]
+protocol = "tcp"
+port = 25565
