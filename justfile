@@ -9,17 +9,29 @@ set ignore-comments := true
 set dotenv-load := true
 
 # output help text.
-help:
-    @{{ just_executable() }} --list
+@help:
+    {{ just_executable() }} --list
 
 # install is build+run.
-install:
-    @just build && just run
+@start:
+    just build && just run
 
 # build the docker image.
-build:
-  docker build --iidfile image-id .
+@build:
+  docker build \
+    --iidfile image-id \
+    .
 
 # run the minecraft server.
-run:
-  docker run --rm -it -p 25565:25565 $(cat image-id)
+@run:
+  docker run --rm -it --name=mmc \
+    -p 25565:25565 \
+    $(cat image-id)
+
+# run the minecraft server.
+@run-persist:
+  docker run --rm -it --name=mmc \
+    --env-file=env \
+    -v mmc_data:/data \
+    -p 25565:25565 \
+    $(cat image-id)
